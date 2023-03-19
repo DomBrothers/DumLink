@@ -1,4 +1,4 @@
-package com.dombrothers.android.dumlink.ui.main
+package com.dombrothers.android.dumlink.ui
 
 class MainContract {
     interface View {
