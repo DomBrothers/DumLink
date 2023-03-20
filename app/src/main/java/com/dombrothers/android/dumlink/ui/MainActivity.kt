@@ -96,5 +96,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         } else {
             linkAdapter.setItemList(testItems3)
         }
+
+        binding.mainTxtFolderTitle.text = folderName
+
     }
 }
