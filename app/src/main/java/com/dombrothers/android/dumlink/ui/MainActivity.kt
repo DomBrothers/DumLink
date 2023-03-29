@@ -1,5 +1,6 @@
 package com.dombrothers.android.dumlink.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.RadioButton
@@ -18,11 +19,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val folderAdapter by lazy { FolderAdapter(::folderListener) }
     private val linkAdapter by lazy { LinkAdapter() }
 
-    private val testItems1 = arrayListOf(
-        Folder("", "덤링크", 10, isSelected = true, isMainFolder = true),
-        Folder("", "폴더1", 5)
-    )
-    private val testItems2 = arrayListOf(
+    private val testLinks1 = arrayListOf(
         Link("", "타이틀", "링크", ""),
         Link("", "타이틀", "링크", ""),
         Link("", "타이틀", "링크", ""),
@@ -34,12 +31,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         Link("", "타이틀", "링크", ""),
         Link("", "타이틀", "링크", "")
     )
-    private val testItems3 = arrayListOf(
+    private val testLinks2 = arrayListOf(
         Link("", "타이틀", "링크", ""),
         Link("", "타이틀", "링크", ""),
         Link("", "타이틀", "링크", ""),
         Link("", "타이틀", "링크", ""),
         Link("", "타이틀", "링크", "")
+    )
+
+    private val testItems = arrayListOf(
+        Folder("", "폴더1", 10, testLinks1),
+        Folder("", "폴더2", 5, testLinks2)
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,13 +52,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private fun initView() {
         with(binding) {
             mainRecyclerFolderList.adapter = folderAdapter
-            folderAdapter.setItemList(testItems1)
+            folderAdapter.setItemList(testItems)
 
             val layoutManager = GridLayoutManager(this@MainActivity, 1)
             mainRecyclerLinkList.layoutManager = layoutManager
             mainRecyclerLinkList.adapter = linkAdapter
             linkAdapter.linkViewType = LinkViewType.TYPE01
-            linkAdapter.setItemList(testItems2)
+            linkAdapter.setItemList(testLinks1)
 
             mainRadioBtn1.setOnClickListener {
                 onRadioButtonClicked(it)
@@ -89,15 +91,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
     }
 
-    private fun folderListener(folderName: String) {
-        // 분기 처리가 추가 되지 않도록 데이터 클래스 구조가 변경 되어야 함
-        if (folderName == "덤링크") {
-            linkAdapter.setItemList(testItems2)
-        } else {
-            linkAdapter.setItemList(testItems3)
-        }
-
-        binding.mainTxtFolderTitle.text = folderName
+    private fun folderListener(folder: Folder) {
+        val intent = Intent(this, FolderActivity::class.java)
+        intent.putExtra("folder", folder)
+        startActivity(intent)
 
     }
 }
