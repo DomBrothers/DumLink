@@ -14,7 +14,8 @@ import com.dombrothers.android.dumlink.ui.adapter.FolderAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class LinkAddActivity: BaseActivity<ActivityLinkAddBinding>(ActivityLinkAddBinding::inflate), LinkAddContract.View {
+class LinkAddActivity : BaseActivity<ActivityLinkAddBinding>(ActivityLinkAddBinding::inflate),
+    LinkAddContract.View {
     private val linkAddPresenter by lazy { LinkAddPresenter(this) }
     private val folderAdapter by lazy { FolderAdapter(::folderListener) }
 
@@ -40,14 +41,16 @@ class LinkAddActivity: BaseActivity<ActivityLinkAddBinding>(ActivityLinkAddBindi
     )
 
     private val testItems = arrayListOf(
-        Folder("", "폴더1", 10, testLinks1),
-        Folder("", "폴더2", 5, testLinks2)
+        Folder("", "폴더1", 10, testLinks1), Folder("", "폴더2", 5, testLinks2)
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initView()
-        linkAddPresenter.getLink(intent.getStringExtra(Intent.EXTRA_TEXT))
+        val addType = intent.getStringExtra("add")
+
+        if (addType != null) linkAddPresenter.getLink(addType)
+        else linkAddPresenter.getLink(intent.getStringExtra(Intent.EXTRA_TEXT))
     }
 
     private fun initView() {

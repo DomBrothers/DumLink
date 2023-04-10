@@ -67,6 +67,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             mainRadioBtn2.setOnClickListener {
                 onRadioButtonClicked(it)
             }
+
+            mainTxtAddBtn.setOnClickListener {
+                val intent = Intent(this@MainActivity, LinkAddActivity::class.java)
+                intent.putExtra("add", mainEditTxtInputLink.text.toString()) // 정규식으로 검증 후 요청
+                startActivity(intent)
+            }
         }
     }
 
