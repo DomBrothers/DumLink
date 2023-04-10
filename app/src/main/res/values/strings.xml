@@ -5,4 +5,6 @@
     <string name="my_folder">내 폴더</string>
     <string name="folder_add">폴더 생성</string>
     <string name="all_link">덤링크</string>
+    <string name="link_store">링크 저장</string>
+    <string name="store">저장하기</string>
 </resources>
