@@ -3,25 +3,25 @@ package com.dombrothers.android.dumlink.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dombrothers.android.dumlink.data.Link
-import com.dombrothers.android.dumlink.data.ScrapTemplateRepository
+import com.dombrothers.android.dumlink.data.LinkRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class LinkAddPresenter(val view: LinkAddContract.View) : ViewModel(), LinkAddContract.Presenter {
-    private val scrapTemplateRepository = ScrapTemplateRepository()
+    private val linkRepository = LinkRepository()
 
     override fun getLink(title: String?) {
         title ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                scrapTemplateRepository.handleSendText(title).apply {
+                linkRepository.handleSendText(title).apply {
                     setDataView(this)
                 }
             } catch (e: Exception) {
-               Timber.d("crawling error")
+                Timber.d("crawling error")
             }
         }
     }

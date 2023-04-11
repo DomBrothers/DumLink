@@ -40,8 +40,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     )
 
     private val testItems = arrayListOf(
-        Folder("", "폴더1", 10, testLinks1),
-        Folder("", "폴더2", 5, testLinks2)
+        Folder("", "폴더1", 10, testLinks1), Folder("", "폴더2", 5, testLinks2)
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
