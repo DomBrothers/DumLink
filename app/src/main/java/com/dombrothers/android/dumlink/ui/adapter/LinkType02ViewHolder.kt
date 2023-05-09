@@ -1,5 +1,6 @@
 package com.dombrothers.android.dumlink.ui.adapter
 
+import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -21,6 +22,19 @@ class LinkType02ViewHolder(
             linkItemType02TxtTitle.text = item.title
 
             linkItemType02TxtLink.text = item.link
+
+            linkItemType02ImgMore.setOnClickListener {
+                linkItemType02Spinner.performClick()
+            }
+
+            ArrayAdapter.createFromResource(
+                itemView.context,
+                R.array.rink_setting,
+                android.R.layout.simple_spinner_item
+            ).also { adapter ->
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                linkItemType02Spinner.adapter = adapter
+            }
         }
     }
 }

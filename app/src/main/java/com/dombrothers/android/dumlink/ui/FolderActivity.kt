@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dombrothers.android.dumlink.R
@@ -45,6 +46,19 @@ class FolderActivity : BaseActivity<ActivityFolderBinding>(ActivityFolderBinding
         }
         binding.folderImgBack.setOnClickListener {
             finish()
+        }
+
+        binding.folderImgMore.setOnClickListener {
+            binding.folderSpinner.performClick()
+        }
+
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.folder_setting,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.folderSpinner.adapter = adapter
         }
     }
 

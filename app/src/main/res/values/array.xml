@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="rink_setting">
+        <item><font fgcolor='#6D6D6D'>\t\t폴더 저장\t\t</font></item>
+        <item><font fgcolor='#6D6D6D'>\t\t링크 수정\t\t</font></item>
+        <item><font fgcolor='#6D6D6D'>\t\t링크 삭제\t\t</font></item>
+    </string-array>
+
+    <string-array name="folder_setting">
+        <item><font fgcolor='#6D6D6D'>\t\t폴더 수정\t\t</font></item>
+        <item><font fgcolor='#6D6D6D'>\t\t폴더 삭제\t\t</font></item>
+    </string-array>
+</resources>

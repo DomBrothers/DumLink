@@ -59,4 +59,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="parent" />
+
+    <Spinner
+        android:id="@+id/link_item_type01_spinner"
+        android:layout_width="1dp"
+        android:background="@null"
+        android:clickable="false"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/link_item_type01_img_more"
+        app:layout_constraintStart_toEndOf="@+id/link_item_type01_txt_link"
+        app:layout_constraintTop_toBottomOf="@+id/link_item_type01_img_more" />
 </androidx.constraintlayout.widget.ConstraintLayout>
