@@ -1,6 +1,7 @@
 package com.dombrothers.android.dumlink.ui
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -11,6 +12,7 @@ import com.dombrothers.android.dumlink.base.BaseActivity
 import com.dombrothers.android.dumlink.data.Folder
 import com.dombrothers.android.dumlink.data.Link
 import com.dombrothers.android.dumlink.databinding.ActivityLinkAddBinding
+import com.dombrothers.android.dumlink.databinding.ActivityLinkModifyBinding
 import com.dombrothers.android.dumlink.ui.adapter.FolderAdapter
 import com.dombrothers.android.dumlink.ui.adapter.FolderChoiceAdapter
 import com.dombrothers.android.dumlink.util.FolderCreateDialog
@@ -18,9 +20,9 @@ import com.dombrothers.android.dumlink.util.Util.setStatusBarColor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class LinkAddActivity : BaseActivity<ActivityLinkAddBinding>(ActivityLinkAddBinding::inflate),
+class LinkModifyActivity :
+    BaseActivity<ActivityLinkModifyBinding>(ActivityLinkModifyBinding::inflate),
     LinkAddContract.View {
-    private val linkAddPresenter by lazy { LinkAddPresenter(this) }
     private val folderAdapter by lazy { FolderChoiceAdapter(::folderListener) }
 
     private val testLinks1 = arrayListOf(
@@ -52,17 +54,24 @@ class LinkAddActivity : BaseActivity<ActivityLinkAddBinding>(ActivityLinkAddBind
         super.onCreate(savedInstanceState)
         setStatusBarColor(getColor(R.color.transparent))
         initView()
-        val addType = intent.getStringExtra("add")
+        val link = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("modify", Link::class.java)
+        } else {
+            intent.getParcelableExtra("modify")
+        }
+        setLink(link)
 
-        if (addType != null) linkAddPresenter.getLink(addType)
-        else linkAddPresenter.getLink(intent.getStringExtra(Intent.EXTRA_TEXT))
     }
 
     private fun initView() {
         with(binding) {
-            linkAddRecyclerFolderList.adapter = folderAdapter
+            linkModifyLlContainer.setOnClickListener {
+                hideKeyboard()
+                linkModifyEditTxtTitle.clearFocus()
+            }
+            linkModifyRecyclerFolderList.adapter = folderAdapter
             folderAdapter.setItemList(testItems)
-            linkAddLlFolderAdd.setOnClickListener {
+            linkModifyLlFolderAdd.setOnClickListener {
                 val dialog = FolderCreateDialog()
                 dialog.show(supportFragmentManager, null)
             }
@@ -74,17 +83,18 @@ class LinkAddActivity : BaseActivity<ActivityLinkAddBinding>(ActivityLinkAddBind
 
     override fun setLink(link: Link?) {
         link ?: return
-        val image = link.imageUrl ?: intent.getStringExtra("ogImage") ?: ""
-        val title = link.title ?: intent.getStringExtra("title") ?: ""
+
+        val image = link.imageUrl
+        val title = link.title
         val uri = link.link
 
         with(binding) {
-            Glide.with(this@LinkAddActivity).load(image).transform(
+            Glide.with(this@LinkModifyActivity).load(image).transform(
                 CenterCrop(), RoundedCorners(8)
-            ).into(linkAddImgThumbnail)
+            ).into(linkModifyImgThumbnail)
 
-            linkAddTxtTitle.text = title
-            linkAddTxtLink.text = uri
+            linkModifyEditTxtTitle.setText(title)
+            linkModifyTxtLink.text = uri
         }
     }
 }

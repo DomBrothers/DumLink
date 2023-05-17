@@ -1,15 +1,49 @@
 package com.dombrothers.android.dumlink.ui.adapter
 
-import android.widget.ArrayAdapter
+import android.content.Intent
+import android.net.Uri
+import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.dombrothers.android.dumlink.R
 import com.dombrothers.android.dumlink.data.Link
 import com.dombrothers.android.dumlink.databinding.LinkItemType01LayoutBinding
+import timber.log.Timber
 
 class LinkType01ViewHolder(
-    private val binding: LinkItemType01LayoutBinding
+    private val binding: LinkItemType01LayoutBinding, private val listener: LinkItemSpinnerListener
 ) : RecyclerView.ViewHolder(binding.root) {
+    init {
+        binding.linkItemType01Spinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?, view: View?, position: Int, id: Long
+                ) {
+                    when (position) {
+                        0 -> { // 폴더 저장
+                            listener.storeFolder(adapterPosition)
+                            binding.linkItemType01Spinner.setSelection(3, false)
+                        }
+                        1 -> { // 링크 수정
+                            listener.modifyLink(adapterPosition)
+                            binding.linkItemType01Spinner.setSelection(3, false)
+                        }
+                        2 -> { // 링크 삭제
+                            listener.removeLink(adapterPosition)
+                            binding.linkItemType01Spinner.setSelection(3, false)
+                        }
 
+                        else -> {
+
+                        }
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+            }
+    }
     fun bind(item: Link) {
         with(binding) {
             linkItemType01TxtTitle.text = item.title
@@ -20,13 +54,15 @@ class LinkType01ViewHolder(
                 linkItemType01Spinner.performClick()
             }
 
-            ArrayAdapter.createFromResource(
-                itemView.context,
-                R.array.rink_setting,
-                android.R.layout.simple_spinner_item
-            ).also { adapter ->
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                linkItemType01Spinner.adapter = adapter
+            linkItemType01Spinner.adapter = LinkSpinnerAdapter(
+                itemView.context, itemView.resources.getStringArray(R.array.rink_setting).toList()
+            )
+
+            linkItemType01Spinner.setSelection(3, false)
+
+            itemView.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
+                itemView.context.startActivity(intent)
             }
         }
     }

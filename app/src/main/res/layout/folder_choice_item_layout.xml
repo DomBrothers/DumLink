@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/folder_choice_item_container"
+    android:orientation="horizontal"
+    android:paddingHorizontal="8dp"
+    android:paddingVertical="6dp"
+    android:background="@drawable/bg_layout_white">
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/folder_choice_item_check"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/check_box_selector"
+        android:button="@null" />
+
+    <TextView
+        android:layout_marginHorizontal="12dp"
+        android:id="@+id/folder_choice_item_txt_folder_name"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:textColor="@color/dum_gray03"
+        android:textSize="14sp"
+        android:layout_height="wrap_content"
+        tools:text="폴더 이름"/>
+
+    <TextView
+        android:id="@+id/folder_choice_item_txt_link_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/dum_gray03"
+        android:textSize="14sp"
+        tools:text="10"/>
+
+</LinearLayout>

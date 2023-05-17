@@ -8,5 +8,6 @@ data class Folder(
     val imageUrl: String,
     val folderName: String,
     val linkCount: Int,
-    val links: ArrayList<Link>
+    val links: ArrayList<Link>,
+    var isChecked: Boolean = false
 ): Parcelable

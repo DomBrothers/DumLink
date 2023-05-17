@@ -4,7 +4,7 @@ import com.dombrothers.android.dumlink.data.Link
 
 class LinkAddContract {
     interface View {
-        fun setLink(link: Link)
+        fun setLink(link: Link?)
 
     }
 

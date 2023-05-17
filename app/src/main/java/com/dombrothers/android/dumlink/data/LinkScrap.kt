@@ -1,6 +1,6 @@
 package com.dombrothers.android.dumlink.data
 
-import com.dombrothers.android.dumlink.util.Util.Companion.extractUrl
+import com.dombrothers.android.dumlink.util.Util.extractUrl
 import org.jsoup.Jsoup
 import java.util.regex.Matcher
 import java.util.regex.Pattern

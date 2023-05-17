@@ -8,12 +8,13 @@ import com.dombrothers.android.dumlink.data.Link
 import com.dombrothers.android.dumlink.databinding.LinkItemType01LayoutBinding
 import com.dombrothers.android.dumlink.databinding.LinkItemType02LayoutBinding
 
-class LinkAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class LinkAdapter(private val listener: LinkItemSpinnerListener) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var linkViewType: LinkViewType = LinkViewType.TYPE01
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
     private val items = ArrayList<Link>()
 
     fun setItemList(newItems: List<Link>) {
@@ -35,14 +36,14 @@ class LinkAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 LinkType01ViewHolder(
                     LinkItemType01LayoutBinding.inflate(
                         LayoutInflater.from(parent.context), parent, false
-                    )
+                    ), listener
                 )
             }
             else -> {
                 LinkType02ViewHolder(
                     LinkItemType02LayoutBinding.inflate(
                         LayoutInflater.from(parent.context), parent, false
-                    )
+                    ), listener
                 )
             }
         }
