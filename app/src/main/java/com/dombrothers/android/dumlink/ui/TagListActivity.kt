@@ -1,8 +1,13 @@
 package com.dombrothers.android.dumlink.ui
 
 import android.content.Intent
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dombrothers.android.dumlink.R
@@ -10,21 +15,18 @@ import com.dombrothers.android.dumlink.base.BaseActivity
 import com.dombrothers.android.dumlink.data.Folder
 import com.dombrothers.android.dumlink.data.Link
 import com.dombrothers.android.dumlink.data.Tag
+import com.dombrothers.android.dumlink.databinding.ActivityFolderBinding
 import com.dombrothers.android.dumlink.databinding.ActivityMainBinding
-import com.dombrothers.android.dumlink.databinding.DialogFolderCreateBinding
+import com.dombrothers.android.dumlink.databinding.ActivityTagListBinding
 import com.dombrothers.android.dumlink.ui.adapter.*
 import com.dombrothers.android.dumlink.util.FolderCreateDialog
+import com.dombrothers.android.dumlink.util.FolderModifyDialog
 import com.dombrothers.android.dumlink.util.RemoveDialog
-import com.dombrothers.android.dumlink.util.Util
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 
-class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate),
-    MainContract.View, LinkItemSpinnerListener {
-    private val folderAdapter by lazy { FolderAdapter(::folderListener) }
-    private val linkAdapter by lazy { LinkAdapter(this) }
+class TagListActivity : BaseActivity<ActivityTagListBinding>(ActivityTagListBinding::inflate) {
     private val tagAdapter by lazy { TagAdapter(::tagListener) }
-
     private val testLinks1 = arrayListOf(
         Link(
             "https://res.cloudinary.com/linkareer/image/fetch/f_auto,c_thumb,w_500,h_250/https://supple-attachment.s3.ap-northeast-2.amazonaws.com/post-thumbnail/LQlhRXE3Ixze7tHJTynqF",
@@ -78,32 +80,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             ""
         )
     )
-    private val testLinks2 = arrayListOf(
-        Link(
-            "https://res.cloudinary.com/linkareer/image/fetch/f_auto,c_thumb,w_500,h_250/https://supple-attachment.s3.ap-northeast-2.amazonaws.com/post-thumbnail/5cD8wIkGKKgNTwQA-SaE7",
-            "제2의 전성기를 맞은 OOH 광고",
-            "https://supple.kr/feed/clhjydtq817201223b12tqbszpp",
-            ""
-        ), Link(
-            "https://res.cloudinary.com/linkareer/image/fetch/f_auto,c_thumb,w_500,h_250/https://supple-attachment.s3.ap-northeast-2.amazonaws.com/post-thumbnail/fvrLNER-msfZ7ESOLqfco",
-            "스타트업의 법적 이슈, 어떻게 대처해야 할까?",
-            "https://supple.kr/feed/clhjwtlv6002g7b0t90a3bteg",
-            ""
-        ), Link(
-            "https://res.cloudinary.com/linkareer/image/fetch/f_auto,c_thumb,w_500,h_250/https://supple-attachment.s3.ap-northeast-2.amazonaws.com/post-thumbnail/F0cpPTBT1BhbTGyVqb8kp",
-            "카페 사장 41%가 2030… 부동산중개소 70%가 5060",
-            "https://supple.kr/feed/clhjw5ix6002c7b0t8hx01pik",
-            ""
-        )
-    )
-
-    private val testItems = arrayListOf(
-        Folder("", "공부할 것", 10, testLinks1),
-        Folder("", "과제 참고 링크", 5, testLinks2),
-        Folder("", "프로그래밍", 5, testLinks2),
-        Folder("", "취업정보", 5, testLinks2)
-    )
-
     private val testTags = arrayListOf(
         Tag("Java", testLinks1),
         Tag("Kotlin", testLinks1),
@@ -114,90 +90,36 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         Tag("유튜브", testLinks1),
         Tag("소프트웨어공학론", testLinks1),
         Tag("IT", testLinks1),
-        Tag("응용소프트웨어 프로그래밍", testLinks1)
+        Tag("응용소프트웨어 프로그래밍", testLinks1),
+        Tag("게임", testLinks1),
+        Tag("스타트업", testLinks1),
+        Tag("뉴스", testLinks1),
+        Tag("손흥민", testLinks1),
+        Tag("카카오", testLinks1),
+        Tag("네이버", testLinks1),
+        Tag("토스", testLinks1),
+        Tag("자기소개서", testLinks1),
+        Tag("포트폴리오", testLinks1),
+        Tag("영화", testLinks1),
+        Tag("넷플릭스", testLinks1),
+        Tag("드라마", testLinks1)
     )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initView()
-    }
 
-    private fun initView() {
         with(binding) {
-            val tagLayoutManager = FlexboxLayoutManager(this@MainActivity)
+            val tagLayoutManager = FlexboxLayoutManager(this@TagListActivity)
             tagLayoutManager.flexDirection = FlexDirection.ROW
-            mainRecyclerTagList.layoutManager = tagLayoutManager
-            mainRecyclerTagList.adapter = tagAdapter
+            tagListRecyclerLinkList.layoutManager = tagLayoutManager
+            tagListRecyclerLinkList.adapter = tagAdapter
             tagAdapter.setItemList(testTags)
 
-            binding.mainTxtTagMore.setOnClickListener {
-                val intent = Intent(this@MainActivity, TagListActivity::class.java)
-                startActivity(intent)
-            }
-
-            binding.mainTxtFolderMore.setOnClickListener {
-                val intent = Intent(this@MainActivity, FolderListActivity::class.java)
-                startActivity(intent)
-            }
-
-            mainClContainer.setOnClickListener {
-                hideKeyboard()
-                mainEditTxtInputLink.clearFocus()
-            }
-            mainLlFolderAdd.setOnClickListener {
-                val dialog = FolderCreateDialog()
-                dialog.show(supportFragmentManager, null)
-            }
-
-            mainRecyclerFolderList.adapter = folderAdapter
-            folderAdapter.setItemList(testItems)
-
-            val layoutManager = GridLayoutManager(this@MainActivity, 1)
-            mainRecyclerLinkList.layoutManager = layoutManager
-            mainRecyclerLinkList.adapter = linkAdapter
-            linkAdapter.linkViewType = LinkViewType.TYPE01
-            linkAdapter.setItemList(testLinks1)
-
-            mainRadioBtn1.setOnClickListener {
-                onRadioButtonClicked(it)
-            }
-
-            mainRadioBtn2.setOnClickListener {
-                onRadioButtonClicked(it)
-            }
-
-            mainTxtAddBtn.setOnClickListener {
-                if (Util.extractUrl(mainEditTxtInputLink.text.toString()) == "") {
-                    showCustomToast("유효하지 않은 링크입니다.")
-                    return@setOnClickListener
-                }
-                val intent = Intent(this@MainActivity, LinkAddActivity::class.java)
-                intent.putExtra("add", mainEditTxtInputLink.text.toString()) // 정규식으로 검증 후 요청
-                startActivity(intent)
+            tagListImgBack.setOnClickListener {
+                finish()
             }
         }
     }
 
-    private fun onRadioButtonClicked(view: View) {
-        if (view is RadioButton) {
-            when (view.getId()) {
-                R.id.main_radio_btn1 -> {
-                    val layoutManager = GridLayoutManager(this, 1)
-                    binding.mainRecyclerLinkList.layoutManager = layoutManager
-                    linkAdapter.linkViewType = LinkViewType.TYPE01
-
-                    binding.mainRadioBtn2.isChecked = false
-                }
-                R.id.main_radio_btn2 -> {
-                    val layoutManager = GridLayoutManager(this, 2)
-                    binding.mainRecyclerLinkList.layoutManager = layoutManager
-                    linkAdapter.linkViewType = LinkViewType.TYPE02
-
-                    binding.mainRadioBtn1.isChecked = false
-                }
-            }
-        }
-    }
 
     private fun tagListener(tag: Tag) {
         val intent = Intent(this, TagActivity::class.java)
@@ -205,25 +127,4 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         startActivity(intent)
     }
 
-    private fun folderListener(folder: Folder) {
-        val intent = Intent(this, FolderActivity::class.java)
-        intent.putExtra("folder", folder)
-        startActivity(intent)
-    }
-
-    override fun storeFolder(position: Int) {
-        val dialog = FolderCreateDialog()
-        dialog.show(supportFragmentManager, null)
-    }
-
-    override fun modifyLink(position: Int) {
-        val intent = Intent(this, LinkModifyActivity::class.java)
-        intent.putExtra("modify", testLinks1[position])
-        startActivity(intent)
-    }
-
-    override fun removeLink(position: Int) {
-        val dialog = RemoveDialog("링크 수정")
-        dialog.show(supportFragmentManager, null)
-    }
 }

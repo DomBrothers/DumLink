@@ -45,9 +45,9 @@ class LinkAddActivity : BaseActivity<ActivityLinkAddBinding>(ActivityLinkAddBind
     )
 
     private val testItems = arrayListOf(
-        Folder("", "폴더1", 10, testLinks1), Folder("", "폴더2", 5, testLinks2)
+        Folder("", "공부할 것", 10, testLinks1), Folder("", "과제 참고 링크", 5, testLinks2), Folder("", "프로그래밍", 5, testLinks2),
+        Folder("", "취업정보", 5, testLinks2), Folder("", "코딩테스트", 5, testLinks2), Folder("", "알고리즘", 5, testLinks2)
     )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStatusBarColor(getColor(R.color.transparent))

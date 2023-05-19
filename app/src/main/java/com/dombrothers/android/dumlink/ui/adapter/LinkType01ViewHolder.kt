@@ -21,17 +21,13 @@ class LinkType01ViewHolder(
                     parent: AdapterView<*>?, view: View?, position: Int, id: Long
                 ) {
                     when (position) {
-                        0 -> { // 폴더 저장
-                            listener.storeFolder(adapterPosition)
-                            binding.linkItemType01Spinner.setSelection(3, false)
-                        }
-                        1 -> { // 링크 수정
+                        0 -> { // 링크 수정
                             listener.modifyLink(adapterPosition)
-                            binding.linkItemType01Spinner.setSelection(3, false)
+                            binding.linkItemType01Spinner.setSelection(2, false)
                         }
-                        2 -> { // 링크 삭제
+                        1 -> { // 링크 삭제
                             listener.removeLink(adapterPosition)
-                            binding.linkItemType01Spinner.setSelection(3, false)
+                            binding.linkItemType01Spinner.setSelection(2, false)
                         }
 
                         else -> {
@@ -58,7 +54,7 @@ class LinkType01ViewHolder(
                 itemView.context, itemView.resources.getStringArray(R.array.rink_setting).toList()
             )
 
-            linkItemType01Spinner.setSelection(3, false)
+            linkItemType01Spinner.setSelection(2, false)
 
             itemView.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))

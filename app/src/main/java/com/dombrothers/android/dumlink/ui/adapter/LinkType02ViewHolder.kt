@@ -24,17 +24,13 @@ class LinkType02ViewHolder(
                     parent: AdapterView<*>?, view: View?, position: Int, id: Long
                 ) {
                     when (position) {
-                        0 -> { // 폴더 저장
-                            listener.storeFolder(adapterPosition)
-                            binding.linkItemType02Spinner.setSelection(3, false)
-                        }
-                        1 -> { // 링크 수정
+                        0 -> { // 링크 수정
                             listener.modifyLink(adapterPosition)
-                            binding.linkItemType02Spinner.setSelection(3, false)
+                            binding.linkItemType02Spinner.setSelection(2, false)
                         }
-                        2 -> { // 링크 삭제
+                        1 -> { // 링크 삭제
                             listener.removeLink(adapterPosition)
-                            binding.linkItemType02Spinner.setSelection(3, false)
+                            binding.linkItemType02Spinner.setSelection(2, false)
                         }
 
                         else -> {
@@ -70,7 +66,7 @@ class LinkType02ViewHolder(
             linkItemType02Spinner.adapter = LinkSpinnerAdapter(
                 itemView.context, itemView.resources.getStringArray(R.array.rink_setting).toList()
             )
-            linkItemType02Spinner.setSelection(3, false)
+            linkItemType02Spinner.setSelection(2, false)
         }
     }
 }

@@ -74,4 +74,7 @@ dependencies {
 
     // jsoup
     implementation 'org.jsoup:jsoup:1.13.1'
+
+    // FlexboxLayout for Recyclerview LayoutManager
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 }
