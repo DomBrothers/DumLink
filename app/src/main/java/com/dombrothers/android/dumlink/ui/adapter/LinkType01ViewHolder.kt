@@ -8,6 +8,7 @@ import android.widget.AdapterView.OnItemSelectedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.dombrothers.android.dumlink.R
 import com.dombrothers.android.dumlink.data.Link
+import com.dombrothers.android.dumlink.data.LinkResponseItem
 import com.dombrothers.android.dumlink.databinding.LinkItemType01LayoutBinding
 import timber.log.Timber
 
@@ -40,7 +41,7 @@ class LinkType01ViewHolder(
                 }
             }
     }
-    fun bind(item: Link) {
+    fun bind(item: LinkResponseItem) {
         with(binding) {
             linkItemType01TxtTitle.text = item.title
 

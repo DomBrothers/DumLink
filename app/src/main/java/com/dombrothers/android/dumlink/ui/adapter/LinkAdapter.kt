@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dombrothers.android.dumlink.R
 import com.dombrothers.android.dumlink.data.Link
+import com.dombrothers.android.dumlink.data.LinkResponseItem
 import com.dombrothers.android.dumlink.databinding.LinkItemType01LayoutBinding
 import com.dombrothers.android.dumlink.databinding.LinkItemType02LayoutBinding
 
@@ -15,9 +16,9 @@ class LinkAdapter(private val listener: LinkItemSpinnerListener) :
             field = value
             notifyDataSetChanged()
         }
-    private val items = ArrayList<Link>()
+    private val items = ArrayList<LinkResponseItem>()
 
-    fun setItemList(newItems: List<Link>) {
+    fun setItemList(newItems: List<LinkResponseItem>) {
         items.run {
             clear()
             addAll(newItems)

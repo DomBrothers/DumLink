@@ -40,8 +40,6 @@ class LinkScrap {
                 }
             }
         }
-
-
         return Pair(url, ogMap)
     }
 }

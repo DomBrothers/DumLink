@@ -23,6 +23,19 @@ import kotlinx.coroutines.launch
 class LinkModifyActivity :
     BaseActivity<ActivityLinkModifyBinding>(ActivityLinkModifyBinding::inflate),
     LinkAddContract.View {
+
+    override fun finished() {
+
+    }
+
+    override fun showLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun dismissLoading() {
+        TODO("Not yet implemented")
+    }
+
     private val folderAdapter by lazy { FolderChoiceAdapter(::folderListener) }
 
     private val testLinks1 = arrayListOf(

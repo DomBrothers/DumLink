@@ -45,7 +45,7 @@ class FolderActivity : BaseActivity<ActivityFolderBinding>(ActivityFolderBinding
         binding.folderRecyclerLinkList.layoutManager = layoutManager
         binding.folderRecyclerLinkList.adapter = linkAdapter
         linkAdapter.linkViewType = LinkViewType.TYPE01
-        linkAdapter.setItemList(folder.links)
+        //linkAdapter.setItemList(folder.links)
 
         binding.folderRadioBtn1.setOnClickListener { v ->
             onRadioButtonClicked(v)

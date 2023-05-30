@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.dombrothers.android.dumlink.R
 import com.dombrothers.android.dumlink.data.Link
+import com.dombrothers.android.dumlink.data.LinkResponseItem
 import com.dombrothers.android.dumlink.databinding.LinkItemType02LayoutBinding
 
 class LinkType02ViewHolder(
@@ -44,9 +45,9 @@ class LinkType02ViewHolder(
             }
     }
 
-    fun bind(item: Link) {
+    fun bind(item: LinkResponseItem) {
         with(binding) {
-            Glide.with(itemView.context).load(item.imageUrl).error(R.drawable.item_placeholder)
+            Glide.with(itemView.context).load(item.image).error(R.drawable.item_placeholder)
                 .placeholder(R.drawable.item_placeholder).transform(CenterCrop())
                 .into(linkItemType02Img)
 

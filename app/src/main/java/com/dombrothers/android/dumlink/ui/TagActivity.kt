@@ -48,7 +48,7 @@ class TagActivity : BaseActivity<ActivityTagBinding>(ActivityTagBinding::inflate
         binding.tagRecyclerLinkList.layoutManager = layoutManager
         binding.tagRecyclerLinkList.adapter = linkAdapter
         linkAdapter.linkViewType = LinkViewType.TYPE01
-        linkAdapter.setItemList(tag.linkList)
+        //linkAdapter.setItemList(tag.linkList)
 
         binding.tagRadioBtn1.setOnClickListener { v ->
             onRadioButtonClicked(v)

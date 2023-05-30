@@ -9,6 +9,7 @@ import com.dombrothers.android.dumlink.R
 import com.dombrothers.android.dumlink.base.BaseActivity
 import com.dombrothers.android.dumlink.data.Folder
 import com.dombrothers.android.dumlink.data.Link
+import com.dombrothers.android.dumlink.data.LinkResponse
 import com.dombrothers.android.dumlink.data.Tag
 import com.dombrothers.android.dumlink.databinding.ActivityMainBinding
 import com.dombrothers.android.dumlink.databinding.DialogFolderCreateBinding
@@ -24,6 +25,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val folderAdapter by lazy { FolderAdapter(::folderListener) }
     private val linkAdapter by lazy { LinkAdapter(this) }
     private val tagAdapter by lazy { TagAdapter(::tagListener) }
+    private val presenter = MainPresenter(this)
 
     private val testLinks1 = arrayListOf(
         Link(
@@ -117,6 +119,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         Tag("응용소프트웨어 프로그래밍", testLinks1)
     )
 
+
+
+    override fun onResume() {
+        super.onResume()
+        presenter.getAllLink()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initView()
@@ -156,7 +164,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             mainRecyclerLinkList.layoutManager = layoutManager
             mainRecyclerLinkList.adapter = linkAdapter
             linkAdapter.linkViewType = LinkViewType.TYPE01
-            linkAdapter.setItemList(testLinks1)
 
             mainRadioBtn1.setOnClickListener {
                 onRadioButtonClicked(it)
@@ -176,6 +183,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 startActivity(intent)
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.mainEditTxtInputLink.clearFocus()
+        binding.mainEditTxtInputLink.text.clear()
     }
 
     private fun onRadioButtonClicked(view: View) {
@@ -220,6 +233,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         val intent = Intent(this, LinkModifyActivity::class.java)
         intent.putExtra("modify", testLinks1[position])
         startActivity(intent)
+    }
+
+    override fun setLinkList(linkResponse: LinkResponse) {
+        linkAdapter.setItemList(linkResponse)
     }
 
     override fun removeLink(position: Int) {
