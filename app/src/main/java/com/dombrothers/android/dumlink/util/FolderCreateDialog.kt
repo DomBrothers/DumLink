@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.dombrothers.android.dumlink.databinding.DialogFolderCreateBinding
 
-class FolderCreateDialog : DialogFragment() {
+class FolderCreateDialog(val listener: (String) -> Unit) : DialogFragment() {
 
     private lateinit var binding: DialogFolderCreateBinding
 
@@ -46,6 +46,9 @@ class FolderCreateDialog : DialogFragment() {
     }
 
     private fun initView() {
-
+        binding.dialogFolderCreateBtn.setOnClickListener {
+            listener(binding.dialogFolderCreateEdit.text.toString())
+            dismiss()
+        }
     }
 }

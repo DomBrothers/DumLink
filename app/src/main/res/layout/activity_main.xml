@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.main.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_cl_container"
@@ -232,18 +232,69 @@
                 android:layout_height="24dp"
                 android:layout_marginEnd="4dp"
                 android:background="@drawable/bg_layout01_selector"
-                android:button="@null"
-                android:checked="true" />
+                android:button="@null" />
 
             <RadioButton
                 android:id="@+id/main_radio_btn2"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:background="@drawable/bg_layout02_selector"
-                android:button="@null" />
+                android:button="@null"
+                android:checked="true"/>
         </RadioGroup>
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="14dp"
+            android:id="@+id/home_loading1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main_txt_folder_title"
+            app:shimmer_auto_start="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <include layout="@layout/loading_item"/>
+                    <include layout="@layout/loading_item"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <include layout="@layout/loading_item"/>
+                    <include layout="@layout/loading_item"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <include layout="@layout/loading_item"/>
+                    <include layout="@layout/loading_item"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <androidx.recyclerview.widget.RecyclerView
+            tools:listitem="@layout/link_item_type02_layout"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+
             android:id="@+id/main_recycler_link_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

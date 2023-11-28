@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.FolderActivity">
+    tools:context=".ui.folder.FolderActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -89,14 +89,14 @@
                     android:layout_height="24dp"
                     android:layout_marginEnd="4dp"
                     android:background="@drawable/bg_layout01_selector"
-                    android:button="@null"
-                    android:checked="true" />
+                    android:button="@null" />
 
                 <RadioButton
                     android:id="@+id/folder_radio_btn2"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:background="@drawable/bg_layout02_selector"
+                    android:checked="true"
                     android:button="@null" />
             </RadioGroup>
 

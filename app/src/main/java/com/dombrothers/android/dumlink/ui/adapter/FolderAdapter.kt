@@ -3,15 +3,18 @@ package com.dombrothers.android.dumlink.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.dombrothers.android.dumlink.data.Folder
+import com.dombrothers.android.dumlink.data.FolderResponseItem
 import com.dombrothers.android.dumlink.databinding.FolderItemLayoutBinding
 
 
-class FolderAdapter(private val listener: (Folder) -> Unit) :
+class FolderAdapter(
+    private val listener: (FolderResponseItem) -> Unit,
+    val isMain: Boolean = false
+) :
     RecyclerView.Adapter<FolderViewHolder>() {
-    private val items = ArrayList<Folder>()
+    private val items = ArrayList<FolderResponseItem>()
 
-    fun setItemList(newItems: List<Folder>) {
+    fun setItemList(newItems: List<FolderResponseItem>) {
         items.run {
             clear()
             addAll(newItems)
@@ -31,5 +34,11 @@ class FolderAdapter(private val listener: (Folder) -> Unit) :
         holder.bind(items[position])
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount(): Int {
+        return if (isMain && items.size > 4) {
+            4
+        } else {
+            items.size
+        }
+    }
 }

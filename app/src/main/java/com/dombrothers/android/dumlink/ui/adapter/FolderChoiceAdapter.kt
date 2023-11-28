@@ -4,17 +4,27 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dombrothers.android.dumlink.data.Folder
+import com.dombrothers.android.dumlink.data.FolderResponse
+import com.dombrothers.android.dumlink.data.FolderResponseItem
 import com.dombrothers.android.dumlink.databinding.FolderChoiceItemLayoutBinding
 
 
-class FolderChoiceAdapter(private val listener: (Int) -> Unit) :
+class FolderChoiceAdapter(private val listener: (FolderResponseItem) -> Unit) :
     RecyclerView.Adapter<FolderChoiceViewHolder>() {
-    private val items = ArrayList<Folder>()
+    private val items = FolderResponse()
 
-    fun setItemList(newItems: List<Folder>) {
+    fun setItemList(newItems: FolderResponse) {
         items.run {
             clear()
             addAll(newItems)
+        }
+        notifyDataSetChanged()
+    }
+
+
+    fun choiceFolder(folderId: Int) {
+        items.forEach {
+            it.isChecked = folderId == it.folderId
         }
         notifyDataSetChanged()
     }

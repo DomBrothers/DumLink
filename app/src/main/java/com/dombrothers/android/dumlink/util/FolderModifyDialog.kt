@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment
 import com.dombrothers.android.dumlink.databinding.DialogFolderCreateBinding
 import com.dombrothers.android.dumlink.databinding.DialogFolderModifyBinding
 
-class FolderModifyDialog() : DialogFragment() {
+class FolderModifyDialog(private val listener: (String) -> Unit) : DialogFragment() {
 
     private lateinit var binding: DialogFolderModifyBinding
 
@@ -47,6 +47,9 @@ class FolderModifyDialog() : DialogFragment() {
     }
 
     private fun initView() {
-
+        binding.dialogFolderModifyBtn.setOnClickListener {
+            listener(binding.dialogFolderModifyEdit.text.toString())
+            dismiss()
+        }
     }
 }

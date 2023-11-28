@@ -1,11 +1,8 @@
-package com.dombrothers.android.dumlink.ui
+package com.dombrothers.android.dumlink.ui.add
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dombrothers.android.dumlink.data.Link
-import com.dombrothers.android.dumlink.data.LinkAddResponse
-import com.dombrothers.android.dumlink.data.LinkRepository
-import com.dombrothers.android.dumlink.data.LinkRequest
+import com.dombrothers.android.dumlink.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -16,11 +13,32 @@ import timber.log.Timber
 
 class LinkAddPresenter(val view: LinkAddContract.View) : ViewModel(), LinkAddContract.Presenter {
     private val linkRepository = LinkRepository()
+    private val folderRepository = FolderRepository()
 
-    override fun postLink(title: String?) {
+    override fun getAllFolder() {
+        try {
+            folderRepository.getAllFolder().enqueue(object : Callback<FolderResponse> {
+                override fun onResponse(
+                    call: Call<FolderResponse>, response: Response<FolderResponse>
+                ) {
+                    response.body()?.let { view.setFolderList(it) }
+                    Timber.d("getAllFolder success")
+                }
+
+                override fun onFailure(call: Call<FolderResponse>, t: Throwable) {
+                    Timber.d("getAllFolder error")
+                }
+            })
+
+        } catch (e: Exception) {
+            Timber.d("getAllFolder error")
+        }
+    }
+
+    override fun postLink(title: String?, folderId: Int?) {
         title ?: return
         view.showLoading()
-        linkRepository.postLink(LinkRequest(title)).enqueue(object :
+        linkRepository.postLink(LinkRequest(title, folderId)).enqueue(object :
             Callback<LinkAddResponse> {
             override fun onResponse(
                 call: Call<LinkAddResponse>,
@@ -62,12 +80,25 @@ class LinkAddPresenter(val view: LinkAddContract.View) : ViewModel(), LinkAddCon
         val image: String? = ogMap["image"]
         val title: String? = ogMap["title"]
 
-        val link = Link(image, title, url)
+        val link = LinkResponseItem(image = image, title = title, link = url)
 
         withContext(Dispatchers.Main) {
             view.setLink(link)
         }
     }
 
+    override fun postFolder(folderName: String) {
+        val folderRequest = FolderRequest(folderName)
+
+        folderRepository.postFolder(folderRequest).enqueue(object : Callback<Folder> {
+            override fun onResponse(call: Call<Folder>, response: Response<Folder>) {
+                view.postFolderSuccess()
+            }
+
+            override fun onFailure(call: Call<Folder>, t: Throwable) {
+
+            }
+        })
+    }
 
 }

@@ -5,14 +5,14 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class LinkResponseItem(
-    val description: String,
-    val firstTag: String,
-    val folder: FolderX,
-    val id: Int,
-    val image: String,
-    val link: String,
-    val secondTag: String,
-    val thirdTag: String,
-    val title: String,
-    val userId: Int
+    val description: String? = null,
+    val firstTag: String? = null,
+    val folder: Folder? = null,
+    val id: Int? = null,
+    val image: String? = null,
+    val link: String? = null,
+    val secondTag: String? = null,
+    val thirdTag: String? = null,
+    val title: String? = null,
+    val userId: Int? = null
 ): Parcelable

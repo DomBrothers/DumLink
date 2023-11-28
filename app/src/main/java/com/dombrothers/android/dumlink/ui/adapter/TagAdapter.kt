@@ -3,15 +3,13 @@ package com.dombrothers.android.dumlink.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.dombrothers.android.dumlink.data.Folder
-import com.dombrothers.android.dumlink.data.Tag
-import com.dombrothers.android.dumlink.databinding.FolderItemLayoutBinding
+import com.dombrothers.android.dumlink.data.TagResponse
 import com.dombrothers.android.dumlink.databinding.TagItemLayoutBinding
 
-class TagAdapter(private val listener: (Tag) -> Unit): RecyclerView.Adapter<TagViewHolder>() {
-    private val items = ArrayList<Tag>()
+class TagAdapter(private val listener: (String) -> Unit, val isMain: Boolean = false): RecyclerView.Adapter<TagViewHolder>() {
+    private val items = TagResponse()
 
-    fun setItemList(newItems: List<Tag>) {
+    fun setItemList(newItems: TagResponse) {
         items.run {
             clear()
             addAll(newItems)
@@ -30,5 +28,11 @@ class TagAdapter(private val listener: (Tag) -> Unit): RecyclerView.Adapter<TagV
         holder.bind(items[position])
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount(): Int {
+        return if (isMain && items.size > 8) {
+            8
+        } else {
+            items.size
+        }
+    }
 }

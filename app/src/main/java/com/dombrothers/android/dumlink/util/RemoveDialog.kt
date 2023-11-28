@@ -11,7 +11,7 @@ import com.dombrothers.android.dumlink.databinding.DialogFolderCreateBinding
 import com.dombrothers.android.dumlink.databinding.DialogFolderModifyBinding
 import com.dombrothers.android.dumlink.databinding.DialogRemoveBinding
 
-class RemoveDialog(private val title: String? = null) : DialogFragment() {
+class RemoveDialog(private val title: String? = null, val listener: (Int) -> Unit, var id: Int? = null) : DialogFragment() {
 
     private lateinit var binding: DialogRemoveBinding
 
@@ -51,6 +51,11 @@ class RemoveDialog(private val title: String? = null) : DialogFragment() {
         }
 
         binding.dialogRemoveBtnNo.setOnClickListener {
+            dismiss()
+        }
+
+        binding.dialogRemoveBtnYes.setOnClickListener {
+            id?.let { it1 -> listener(it1) }
             dismiss()
         }
     }

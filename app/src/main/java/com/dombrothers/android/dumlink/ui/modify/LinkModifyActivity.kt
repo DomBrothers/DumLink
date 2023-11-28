@@ -1,28 +1,41 @@
-package com.dombrothers.android.dumlink.ui
+package com.dombrothers.android.dumlink.ui.modify
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.dombrothers.android.dumlink.R
 import com.dombrothers.android.dumlink.base.BaseActivity
 import com.dombrothers.android.dumlink.data.Folder
-import com.dombrothers.android.dumlink.data.Link
-import com.dombrothers.android.dumlink.databinding.ActivityLinkAddBinding
+import com.dombrothers.android.dumlink.data.FolderResponse
+import com.dombrothers.android.dumlink.data.FolderResponseItem
+import com.dombrothers.android.dumlink.data.LinkResponseItem
 import com.dombrothers.android.dumlink.databinding.ActivityLinkModifyBinding
-import com.dombrothers.android.dumlink.ui.adapter.FolderAdapter
 import com.dombrothers.android.dumlink.ui.adapter.FolderChoiceAdapter
+import com.dombrothers.android.dumlink.ui.add.LinkAddContract
+import com.dombrothers.android.dumlink.ui.add.LinkAddPresenter
 import com.dombrothers.android.dumlink.util.FolderCreateDialog
 import com.dombrothers.android.dumlink.util.Util.setStatusBarColor
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class LinkModifyActivity :
     BaseActivity<ActivityLinkModifyBinding>(ActivityLinkModifyBinding::inflate),
-    LinkAddContract.View {
+    LinkAddContract.View, LinkModifyContract.View {
+
+    var folderId: Int? = null
+    var linkId: Int? = null
+    private val folderAdapter by lazy { FolderChoiceAdapter(::folderListener) }
+    override fun patchLinkSuccess() {
+        finish()
+    }
+
+    private val presenter = LinkAddPresenter(this)
+    private val presenter2 = LinkModifyPresenter(this)
+
+    override fun setFolderList(folderResponse: FolderResponse) {
+        folderAdapter.setItemList(folderResponse)
+        folderAdapter.choiceFolder(folderId!!)
+    }
 
     override fun finished() {
 
@@ -36,43 +49,22 @@ class LinkModifyActivity :
         TODO("Not yet implemented")
     }
 
-    private val folderAdapter by lazy { FolderChoiceAdapter(::folderListener) }
-
-    private val testLinks1 = arrayListOf(
-        Link("", "타이틀", "링크", ""),
-        Link("", "타이틀", "링크", ""),
-        Link("", "타이틀", "링크", ""),
-        Link("", "타이틀", "링크", ""),
-        Link("", "타이틀", "링크", ""),
-        Link("", "타이틀", "링크", ""),
-        Link("", "타이틀", "링크", ""),
-        Link("", "타이틀", "링크", ""),
-        Link("", "타이틀", "링크", ""),
-        Link("", "타이틀", "링크", "")
-    )
-
-    private val testLinks2 = arrayListOf(
-        Link("", "타이틀", "링크", ""),
-        Link("", "타이틀", "링크", ""),
-        Link("", "타이틀", "링크", ""),
-        Link("", "타이틀", "링크", ""),
-        Link("", "타이틀", "링크", "")
-    )
-
-    private val testItems = arrayListOf(
-        Folder("", "공부할 것", 10, testLinks1), Folder("", "과제 참고 링크", 5, testLinks2), Folder("", "프로그래밍", 5, testLinks2),
-        Folder("", "취업정보", 5, testLinks2), Folder("", "코딩테스트", 5, testLinks2), Folder("", "알고리즘", 5, testLinks2)
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStatusBarColor(getColor(R.color.transparent))
         initView()
+
+        presenter.getAllFolder()
         val link = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("modify", Link::class.java)
+            intent.getParcelableExtra("modify", LinkResponseItem::class.java)
         } else {
             intent.getParcelableExtra("modify")
         }
+
+        linkId = link!!.id
+
+        folderId = link!!.folder!!.folderId
         setLink(link)
     }
 
@@ -82,22 +74,31 @@ class LinkModifyActivity :
                 hideKeyboard()
                 linkModifyEditTxtTitle.clearFocus()
             }
+
+            binding.linkModifyBtnStore.setOnClickListener {
+                presenter2.patchLink(linkId!!, folderId!!)
+            }
             linkModifyRecyclerFolderList.adapter = folderAdapter
-            folderAdapter.setItemList(testItems)
             linkModifyLlFolderAdd.setOnClickListener {
-                val dialog = FolderCreateDialog()
+                val dialog = FolderCreateDialog(::createFolder)
                 dialog.show(supportFragmentManager, null)
             }
         }
     }
-
-    private fun folderListener(position: Int) {
+    fun createFolder(folderName: String) {
+        showLoadingDialog(this)
+        presenter.postFolder(folderName)
     }
 
-    override fun setLink(link: Link?) {
+    private fun folderListener(folder: FolderResponseItem) {
+        folderId = folder.folderId
+        folderAdapter.choiceFolder(folderId!!)
+    }
+
+    override fun setLink(link: LinkResponseItem?) {
         link ?: return
 
-        val image = link.imageUrl
+        val image = link.image
         val title = link.title
         val uri = link.link
 
@@ -109,5 +110,9 @@ class LinkModifyActivity :
             linkModifyEditTxtTitle.setText(title)
             linkModifyTxtLink.text = uri
         }
+    }
+    override fun postFolderSuccess() {
+        dismissLoadingDialog()
+        presenter.getAllFolder()
     }
 }

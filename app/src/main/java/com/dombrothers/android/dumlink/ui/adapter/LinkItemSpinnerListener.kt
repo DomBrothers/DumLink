@@ -1,11 +1,11 @@
 package com.dombrothers.android.dumlink.ui.adapter
 
-import com.dombrothers.android.dumlink.data.Link
+import com.dombrothers.android.dumlink.data.LinkResponseItem
 
 interface LinkItemSpinnerListener {
-    fun storeFolder(position: Int)
+    fun storeFolder(link: LinkResponseItem)
 
-    fun modifyLink(position: Int)
+    fun modifyLink(link: LinkResponseItem)
 
-    fun removeLink(position: Int)
+    fun removeLink(link: LinkResponseItem)
 }

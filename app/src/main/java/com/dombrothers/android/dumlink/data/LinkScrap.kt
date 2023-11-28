@@ -10,10 +10,10 @@ class LinkScrap {
         val ogMap = mutableMapOf<String, String>()
         val url = extractUrl(title)
 
-        val document = Jsoup.connect(url).userAgent("Android").get()
+        val document = Jsoup.connect(url).userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36").get()
         val elements = document.select("meta[property^=og:]")
 
-        elements?.forEach { el ->
+        elements.forEach { el ->
             when (el.attr("property")) {
                 "og:url" -> {
                     el.attr("content")?.let { content ->

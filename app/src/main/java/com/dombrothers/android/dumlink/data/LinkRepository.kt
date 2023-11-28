@@ -2,6 +2,8 @@ package com.dombrothers.android.dumlink.data
 
 import retrofit2.Call
 import retrofit2.create
+import retrofit2.http.Body
+import retrofit2.http.Path
 
 
 class LinkRepository {
@@ -17,5 +19,13 @@ class LinkRepository {
 
     fun getAllLink(): Call<LinkResponse> {
         return  RetrofitClient.retrofit.create<RetrofitService>().getAllLink()
+    }
+
+    fun patchLink(body: LinkModifyRequest, id: Int): Call<LinkResponseItem> {
+        return RetrofitClient.retrofit.create<RetrofitService>().patchLink(body, id)
+    }
+
+    fun deleteLink(id: Int): Call<String> {
+        return  RetrofitClient.retrofit.create<RetrofitService>().deleteLink(id)
     }
 }

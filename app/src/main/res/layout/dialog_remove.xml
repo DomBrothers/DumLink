@@ -46,14 +46,15 @@
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/dialog_remove_btn_yes"
+            android:id="@+id/dialog_remove_btn_no"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
+            android:stateListAnimator="@null"
             android:background="@drawable/bg_layout_dum_gray01"
             android:paddingVertical="6dp"
-            android:text="확인"
+            android:text="취소"
             android:textColor="@color/dum_gray04"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -63,13 +64,14 @@
             app:layout_constraintTop_toBottomOf="@+id/nestedScrollView" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/dialog_remove_btn_no"
+            android:id="@+id/dialog_remove_btn_yes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/bg_layout_dum_blue02"
             android:paddingVertical="6dp"
-            android:text="취소"
+            android:text="삭제"
+            android:stateListAnimator="@null"
             android:textColor="@color/dum_gray01"
             android:textSize="14sp"
             android:textStyle="bold"

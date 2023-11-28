@@ -4,18 +4,23 @@ import android.content.Intent
 import android.net.Uri
 import android.view.View
 import android.widget.AdapterView
-import android.widget.AdapterView.OnItemSelectedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.dombrothers.android.dumlink.R
-import com.dombrothers.android.dumlink.data.Link
 import com.dombrothers.android.dumlink.data.LinkResponseItem
+import com.dombrothers.android.dumlink.data.TagResponse
 import com.dombrothers.android.dumlink.databinding.LinkItemType01LayoutBinding
-import timber.log.Timber
+import com.dombrothers.android.dumlink.ui.tag.TagActivity
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
 
 class LinkType01ViewHolder(
     private val binding: LinkItemType01LayoutBinding, private val listener: LinkItemSpinnerListener
 ) : RecyclerView.ViewHolder(binding.root) {
-    init {
+
+
+    fun bind(item: LinkResponseItem) {
+        binding.linkItemType01TxtTags.text = "#${item.firstTag} #${item.secondTag} #${item.thirdTag}"
+
         binding.linkItemType01Spinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -23,11 +28,11 @@ class LinkType01ViewHolder(
                 ) {
                     when (position) {
                         0 -> { // 링크 수정
-                            listener.modifyLink(adapterPosition)
+                            listener.modifyLink(item)
                             binding.linkItemType01Spinner.setSelection(2, false)
                         }
                         1 -> { // 링크 삭제
-                            listener.removeLink(adapterPosition)
+                            listener.removeLink(item)
                             binding.linkItemType01Spinner.setSelection(2, false)
                         }
 
@@ -40,12 +45,14 @@ class LinkType01ViewHolder(
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
             }
-    }
-    fun bind(item: LinkResponseItem) {
-        with(binding) {
-            linkItemType01TxtTitle.text = item.title
 
-            linkItemType01TxtLink.text = item.link
+        with(binding) {
+            var title = item.title
+
+            if (title.isNullOrBlank()) title = "무제"
+            linkItemType01TxtTitle.text = title
+
+            //linkItemType01TxtLink.text = item.link
 
             linkItemType01ImgMore.setOnClickListener {
                 linkItemType01Spinner.performClick()
