@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">DumLink</string>
+    <string name="input_link">링크를 입력해주세요</string>
+    <string name="add">추가</string>
+    <string name="my_folder">내 폴더</string>
+    <string name="folder_add">폴더 생성</string>
+    <string name="all_link">덤링크</string>
+</resources>
